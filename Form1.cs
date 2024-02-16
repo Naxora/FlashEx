@@ -14,6 +14,7 @@ namespace FlashEx
             InitializeComponent();
         }
 
+        // Variables
         private Process? Process;
         private StringBuilder? OutputBuffer;
         SerialPort BuiltInSerialPort = new();
@@ -26,26 +27,22 @@ namespace FlashEx
         private static readonly string Firmwares = AppExecPath + @"firmwares\";
         private static readonly string Config = AppExecPath + @"config\";
 
-
         // App Defs
         private static readonly string esptool = AppExecPath + @"esptool\esptool.exe";
-        // private static readonly string espsecure = AppExecPath + @"esptool\espsecure.exe";
-        // private static readonly string espefuse = AppExecPath + @"esptool\espefuse.exe";
-        // private static readonly string esp_rfc2217_server = AppExecPath + @"esptool\esp_rfc2217_server.exe";
 
         // Configs
-        private static readonly string tasmota_firmware_urls = Config + @"tasmota_firmware_urls.txt";
+        private static readonly string firmware_urls = Config + @"firmware_urls.txt";
 
         private void Form1_Load(object sender, EventArgs e)
         {
             // App and esptool version
-            this.Text = "FlashEx v1.1 | esptool v4.7.0";
+            this.Text = "FlashEx v1.2 | esptool v4.7.0";
 
             // Get a list of serial port names
             GetAvailableSerialPorts();
 
             // Read tasmota firmwares from file
-            foreach (string line in File.ReadLines(tasmota_firmware_urls))
+            foreach (string line in File.ReadLines(firmware_urls))
             {
                 comboBoxTasmotaSource.Items.Add(line);
             }
@@ -62,27 +59,28 @@ namespace FlashEx
         private void iconButtonOpenBinFile_Click(object sender, EventArgs e)
         {
 
-            OpenFileDialog openFileDialog1 = new OpenFileDialog
+            OpenFileDialog OpenFirmware = new()
             {
                 InitialDirectory = Firmwares,
-                Title = "Browse ISO Files",
+                Title = "Browse firmware Files",
 
                 CheckFileExists = true,
                 CheckPathExists = true,
 
-                //DefaultExt = "iso",
-                //Filter = "iso files (*.iso)|*.iso",
-                FilterIndex = 2,
+                DefaultExt = "bin",
+                Filter = "bin files (*.bin)|*.bin|All files (*.*)|*.*",
+
+                FilterIndex = 1,
                 RestoreDirectory = true,
 
                 ReadOnlyChecked = true,
                 ShowReadOnly = true
             };
 
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            if (OpenFirmware.ShowDialog() == DialogResult.OK)
             {
-                FirmwareFileWithPath = openFileDialog1.FileName;
-                labelSelectedFWName.Text = Path.GetFileName(openFileDialog1.FileName);
+                FirmwareFileWithPath = OpenFirmware.FileName;
+                labelSelectedFWName.Text = Path.GetFileName(OpenFirmware.FileName);
             }
         }
 
@@ -585,7 +583,7 @@ namespace FlashEx
             OutputBuffer.Clear();
 
             // Create process info
-            var psi = new ProcessStartInfo
+            var proc_info = new ProcessStartInfo
             {
                 // App name
                 FileName = esptool,
@@ -604,7 +602,7 @@ namespace FlashEx
             // Initialize process
             Process = new Process
             {
-                StartInfo = psi
+                StartInfo = proc_info
             };
 
             // Event handler for receiving data from the process
