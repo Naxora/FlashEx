@@ -5,7 +5,7 @@ This tool created for my self for fun but I decided to share with others :coffee
 ## Features
 - Flash firmwares
 - Erase flash
-- Connect to Serial Port to check logs
+- Monitor Serial Port
 - Read info from ESP devices
 - Set WIFI credentials for Tasmota firmwares
 - Download Tasmota and any custom configured URLs firmwares
