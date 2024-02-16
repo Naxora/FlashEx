@@ -77,14 +77,14 @@
             listBoxDatasheetList.ItemHeight = 15;
             listBoxDatasheetList.Location = new Point(6, 22);
             listBoxDatasheetList.Name = "listBoxDatasheetList";
-            listBoxDatasheetList.Size = new Size(284, 214);
+            listBoxDatasheetList.Size = new Size(284, 409);
             listBoxDatasheetList.TabIndex = 4;
             listBoxDatasheetList.DoubleClick += listBoxDatasheetList_DoubleClick;
             // 
             // linkLabelEspProdSelector
             // 
             linkLabelEspProdSelector.AutoSize = true;
-            linkLabelEspProdSelector.Location = new Point(12, 322);
+            linkLabelEspProdSelector.Location = new Point(12, 517);
             linkLabelEspProdSelector.Name = "linkLabelEspProdSelector";
             linkLabelEspProdSelector.Size = new Size(116, 15);
             linkLabelEspProdSelector.TabIndex = 5;
@@ -97,10 +97,10 @@
             groupBox2.Controls.Add(listBoxDatasheetList);
             groupBox2.Location = new Point(12, 76);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(296, 243);
+            groupBox2.Size = new Size(296, 438);
             groupBox2.TabIndex = 6;
             groupBox2.TabStop = false;
-            groupBox2.Text = "Useful Things";
+            groupBox2.Text = "Docs";
             // 
             // Database
             // 
