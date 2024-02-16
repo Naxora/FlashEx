@@ -334,9 +334,9 @@
             iconButtonOpenEspDocsDatabase.ImageAlign = ContentAlignment.MiddleLeft;
             iconButtonOpenEspDocsDatabase.Location = new Point(6, 22);
             iconButtonOpenEspDocsDatabase.Name = "iconButtonOpenEspDocsDatabase";
-            iconButtonOpenEspDocsDatabase.Size = new Size(120, 24);
+            iconButtonOpenEspDocsDatabase.Size = new Size(246, 24);
             iconButtonOpenEspDocsDatabase.TabIndex = 24;
-            iconButtonOpenEspDocsDatabase.Text = "ESP Database";
+            iconButtonOpenEspDocsDatabase.Text = "Device Database";
             iconButtonOpenEspDocsDatabase.UseVisualStyleBackColor = true;
             iconButtonOpenEspDocsDatabase.Click += iconButtonOpenEspDocsDatabase_Click;
             // 
