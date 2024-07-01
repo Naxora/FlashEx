@@ -38,7 +38,7 @@ namespace FlashEx
         private void Form1_Load(object sender, EventArgs e)
         {
             // App and esptool version
-            this.Text = "FlashEx v1.2 | esptool v4.7.0";
+            this.Text = "FlashEx v1.3 | esptool v4.7.0";
 
             // Get a list of serial port names
             GetAvailableSerialPorts();
