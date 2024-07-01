@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             statusStrip1 = new StatusStrip();
             toolStripStatusLabel1 = new ToolStripStatusLabel();
@@ -52,7 +53,9 @@
             groupBox6 = new GroupBox();
             iconButtonOpenEspDocsDatabase = new FontAwesome.Sharp.IconButton();
             groupBox7 = new GroupBox();
+            iconButtonResetDevice = new FontAwesome.Sharp.IconButton();
             iconButtonEraseFlash = new FontAwesome.Sharp.IconButton();
+            iconButtonSaveFirmware = new FontAwesome.Sharp.IconButton();
             iconButtonTasmotaSetWifi = new FontAwesome.Sharp.IconButton();
             iconButtonDisconnectFromSerial = new FontAwesome.Sharp.IconButton();
             textBoxTasmotaWifiSSID = new TextBox();
@@ -63,6 +66,12 @@
             textBox1 = new TextBox();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            groupBox10 = new GroupBox();
+            groupBox11 = new GroupBox();
+            checkBoxCustomSavePartTo = new CheckBox();
+            comboBoxBackupFirmFrom = new ComboBox();
+            checkBoxCustomSavePartFrom = new CheckBox();
+            comboBoxBackupFirmTo = new ComboBox();
             iconButtonConnectToSerial = new FontAwesome.Sharp.IconButton();
             tabPage2 = new TabPage();
             groupBox9 = new GroupBox();
@@ -70,6 +79,7 @@
             labelDownloadTasmotaBin = new Label();
             iconButtonDownloadTasmotaBin = new FontAwesome.Sharp.IconButton();
             comboBoxTasmotaSource = new ComboBox();
+            toolTipInfo = new ToolTip(components);
             statusStrip1.SuspendLayout();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -81,6 +91,8 @@
             groupBox8.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
+            groupBox10.SuspendLayout();
+            groupBox11.SuspendLayout();
             tabPage2.SuspendLayout();
             groupBox9.SuspendLayout();
             SuspendLayout();
@@ -88,9 +100,9 @@
             // statusStrip1
             // 
             statusStrip1.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel1, toolStripStatusLabelActionStatus });
-            statusStrip1.Location = new Point(0, 614);
+            statusStrip1.Location = new Point(0, 681);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Size = new Size(906, 22);
+            statusStrip1.Size = new Size(1045, 22);
             statusStrip1.TabIndex = 0;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -144,10 +156,10 @@
             // buttonInitFlashProcess
             // 
             buttonInitFlashProcess.ForeColor = SystemColors.WindowText;
-            buttonInitFlashProcess.IconChar = FontAwesome.Sharp.IconChar.Fire;
+            buttonInitFlashProcess.IconChar = FontAwesome.Sharp.IconChar.Zap;
             buttonInitFlashProcess.IconColor = Color.Green;
             buttonInitFlashProcess.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            buttonInitFlashProcess.IconSize = 19;
+            buttonInitFlashProcess.IconSize = 23;
             buttonInitFlashProcess.ImageAlign = ContentAlignment.MiddleLeft;
             buttonInitFlashProcess.Location = new Point(155, 22);
             buttonInitFlashProcess.Name = "buttonInitFlashProcess";
@@ -203,7 +215,7 @@
             richTextBoxConsoleLog.Name = "richTextBoxConsoleLog";
             richTextBoxConsoleLog.ReadOnly = true;
             richTextBoxConsoleLog.ScrollBars = RichTextBoxScrollBars.Vertical;
-            richTextBoxConsoleLog.Size = new Size(922, 262);
+            richTextBoxConsoleLog.Size = new Size(1061, 281);
             richTextBoxConsoleLog.TabIndex = 16;
             richTextBoxConsoleLog.Text = "";
             // 
@@ -228,7 +240,7 @@
             groupBox2.Controls.Add(comboBoxBaudRate);
             groupBox2.Location = new Point(6, 152);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(155, 67);
+            groupBox2.Size = new Size(155, 58);
             groupBox2.TabIndex = 20;
             groupBox2.TabStop = false;
             groupBox2.Text = "Baudrate";
@@ -261,10 +273,12 @@
             groupBox4.Controls.Add(comboBoxPartitionTable);
             groupBox4.Location = new Point(167, 152);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(148, 67);
+            groupBox4.Size = new Size(148, 58);
             groupBox4.TabIndex = 21;
             groupBox4.TabStop = false;
-            groupBox4.Text = "Partition Table";
+            groupBox4.Tag = "";
+            groupBox4.Text = "Partition (Flash From...)";
+            toolTipInfo.SetToolTip(groupBox4, "Flash start from this address");
             // 
             // checkBoxCustomPartitionTableBool
             // 
@@ -290,9 +304,9 @@
             // 
             groupBox5.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             groupBox5.Controls.Add(richTextBoxConsoleLog);
-            groupBox5.Location = new Point(0, 328);
+            groupBox5.Location = new Point(0, 376);
             groupBox5.Name = "groupBox5";
-            groupBox5.Size = new Size(906, 286);
+            groupBox5.Size = new Size(1045, 305);
             groupBox5.TabIndex = 22;
             groupBox5.TabStop = false;
             groupBox5.Text = "Console Log";
@@ -318,7 +332,7 @@
             groupBox6.Controls.Add(iconButtonOpenEspDocsDatabase);
             groupBox6.Controls.Add(iconButtonImageInfo);
             groupBox6.Controls.Add(iconButtonReadESPInfo);
-            groupBox6.Location = new Point(634, 6);
+            groupBox6.Location = new Point(773, 6);
             groupBox6.Name = "groupBox6";
             groupBox6.Size = new Size(260, 88);
             groupBox6.TabIndex = 24;
@@ -342,14 +356,31 @@
             // 
             // groupBox7
             // 
+            groupBox7.Controls.Add(iconButtonResetDevice);
             groupBox7.Controls.Add(iconButtonEraseFlash);
             groupBox7.Controls.Add(buttonInitFlashProcess);
-            groupBox7.Location = new Point(6, 225);
+            groupBox7.Location = new Point(6, 216);
             groupBox7.Name = "groupBox7";
-            groupBox7.Size = new Size(309, 67);
+            groupBox7.Size = new Size(309, 120);
             groupBox7.TabIndex = 25;
             groupBox7.TabStop = false;
             groupBox7.Text = "Final Step";
+            // 
+            // iconButtonResetDevice
+            // 
+            iconButtonResetDevice.IconChar = FontAwesome.Sharp.IconChar.TurnDown;
+            iconButtonResetDevice.IconColor = Color.Orange;
+            iconButtonResetDevice.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            iconButtonResetDevice.IconSize = 23;
+            iconButtonResetDevice.ImageAlign = ContentAlignment.MiddleLeft;
+            iconButtonResetDevice.Location = new Point(6, 67);
+            iconButtonResetDevice.Name = "iconButtonResetDevice";
+            iconButtonResetDevice.Size = new Size(143, 39);
+            iconButtonResetDevice.TabIndex = 13;
+            iconButtonResetDevice.Text = "Reset State";
+            toolTipInfo.SetToolTip(iconButtonResetDevice, "Run code on device");
+            iconButtonResetDevice.UseVisualStyleBackColor = true;
+            iconButtonResetDevice.Click += iconButtonResetDevice_Click;
             // 
             // iconButtonEraseFlash
             // 
@@ -357,7 +388,7 @@
             iconButtonEraseFlash.IconChar = FontAwesome.Sharp.IconChar.Eraser;
             iconButtonEraseFlash.IconColor = Color.Crimson;
             iconButtonEraseFlash.IconFont = FontAwesome.Sharp.IconFont.Auto;
-            iconButtonEraseFlash.IconSize = 19;
+            iconButtonEraseFlash.IconSize = 23;
             iconButtonEraseFlash.ImageAlign = ContentAlignment.MiddleLeft;
             iconButtonEraseFlash.Location = new Point(6, 22);
             iconButtonEraseFlash.Name = "iconButtonEraseFlash";
@@ -366,6 +397,21 @@
             iconButtonEraseFlash.Text = "Erase Flash";
             iconButtonEraseFlash.UseVisualStyleBackColor = true;
             iconButtonEraseFlash.Click += iconButtonEraseFlash_Click;
+            // 
+            // iconButtonSaveFirmware
+            // 
+            iconButtonSaveFirmware.IconChar = FontAwesome.Sharp.IconChar.Save;
+            iconButtonSaveFirmware.IconColor = Color.DarkTurquoise;
+            iconButtonSaveFirmware.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            iconButtonSaveFirmware.IconSize = 23;
+            iconButtonSaveFirmware.ImageAlign = ContentAlignment.MiddleLeft;
+            iconButtonSaveFirmware.Location = new Point(6, 82);
+            iconButtonSaveFirmware.Name = "iconButtonSaveFirmware";
+            iconButtonSaveFirmware.Size = new Size(244, 39);
+            iconButtonSaveFirmware.TabIndex = 14;
+            iconButtonSaveFirmware.Text = "Backup";
+            iconButtonSaveFirmware.UseVisualStyleBackColor = true;
+            iconButtonSaveFirmware.Click += iconButtonSaveFirmware_Click;
             // 
             // iconButtonTasmotaSetWifi
             // 
@@ -390,7 +436,7 @@
             iconButtonDisconnectFromSerial.IconFont = FontAwesome.Sharp.IconFont.Auto;
             iconButtonDisconnectFromSerial.IconSize = 19;
             iconButtonDisconnectFromSerial.ImageAlign = ContentAlignment.TopLeft;
-            iconButtonDisconnectFromSerial.Location = new Point(755, 268);
+            iconButtonDisconnectFromSerial.Location = new Point(894, 312);
             iconButtonDisconnectFromSerial.Name = "iconButtonDisconnectFromSerial";
             iconButtonDisconnectFromSerial.Size = new Size(139, 24);
             iconButtonDisconnectFromSerial.TabIndex = 27;
@@ -465,11 +511,12 @@
             tabControl1.Location = new Point(-4, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(915, 326);
+            tabControl1.Size = new Size(1054, 370);
             tabControl1.TabIndex = 33;
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(groupBox10);
             tabPage1.Controls.Add(iconButtonConnectToSerial);
             tabPage1.Controls.Add(groupBox3);
             tabPage1.Controls.Add(iconButtonDisconnectFromSerial);
@@ -481,9 +528,74 @@
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(907, 298);
+            tabPage1.Size = new Size(1046, 342);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Main";
+            // 
+            // groupBox10
+            // 
+            groupBox10.Controls.Add(groupBox11);
+            groupBox10.Controls.Add(iconButtonSaveFirmware);
+            groupBox10.Location = new Point(321, 6);
+            groupBox10.Name = "groupBox10";
+            groupBox10.Size = new Size(256, 140);
+            groupBox10.TabIndex = 29;
+            groupBox10.TabStop = false;
+            groupBox10.Text = "Backup Firmware";
+            // 
+            // groupBox11
+            // 
+            groupBox11.Controls.Add(checkBoxCustomSavePartTo);
+            groupBox11.Controls.Add(comboBoxBackupFirmFrom);
+            groupBox11.Controls.Add(checkBoxCustomSavePartFrom);
+            groupBox11.Controls.Add(comboBoxBackupFirmTo);
+            groupBox11.Location = new Point(6, 22);
+            groupBox11.Name = "groupBox11";
+            groupBox11.Size = new Size(244, 54);
+            groupBox11.TabIndex = 17;
+            groupBox11.TabStop = false;
+            groupBox11.Text = "Save partition \"From\" - \"To\"";
+            // 
+            // checkBoxCustomSavePartTo
+            // 
+            checkBoxCustomSavePartTo.AutoSize = true;
+            checkBoxCustomSavePartTo.Location = new Point(223, 26);
+            checkBoxCustomSavePartTo.Name = "checkBoxCustomSavePartTo";
+            checkBoxCustomSavePartTo.Size = new Size(15, 14);
+            checkBoxCustomSavePartTo.TabIndex = 31;
+            checkBoxCustomSavePartTo.UseVisualStyleBackColor = true;
+            checkBoxCustomSavePartTo.CheckStateChanged += checkBoxCustomSavePartTo_CheckStateChanged;
+            // 
+            // comboBoxBackupFirmFrom
+            // 
+            comboBoxBackupFirmFrom.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxBackupFirmFrom.FormattingEnabled = true;
+            comboBoxBackupFirmFrom.Items.AddRange(new object[] { "0x00000" });
+            comboBoxBackupFirmFrom.Location = new Point(6, 22);
+            comboBoxBackupFirmFrom.Name = "comboBoxBackupFirmFrom";
+            comboBoxBackupFirmFrom.Size = new Size(92, 23);
+            comboBoxBackupFirmFrom.TabIndex = 15;
+            // 
+            // checkBoxCustomSavePartFrom
+            // 
+            checkBoxCustomSavePartFrom.AutoSize = true;
+            checkBoxCustomSavePartFrom.Location = new Point(104, 26);
+            checkBoxCustomSavePartFrom.Name = "checkBoxCustomSavePartFrom";
+            checkBoxCustomSavePartFrom.Size = new Size(15, 14);
+            checkBoxCustomSavePartFrom.TabIndex = 30;
+            checkBoxCustomSavePartFrom.UseVisualStyleBackColor = true;
+            checkBoxCustomSavePartFrom.CheckStateChanged += checkBoxCustomSavePartFrom_CheckStateChanged;
+            // 
+            // comboBoxBackupFirmTo
+            // 
+            comboBoxBackupFirmTo.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxBackupFirmTo.FormattingEnabled = true;
+            comboBoxBackupFirmTo.Items.AddRange(new object[] { "0x100000", "0x200000", "0x400000" });
+            comboBoxBackupFirmTo.Location = new Point(125, 22);
+            comboBoxBackupFirmTo.Name = "comboBoxBackupFirmTo";
+            comboBoxBackupFirmTo.Size = new Size(92, 23);
+            comboBoxBackupFirmTo.TabIndex = 16;
+            toolTipInfo.SetToolTip(comboBoxBackupFirmTo, "You can use 'Read Info' to \r\ndetermine flash size (Detected flash size: XMB)");
             // 
             // iconButtonConnectToSerial
             // 
@@ -493,7 +605,7 @@
             iconButtonConnectToSerial.IconFont = FontAwesome.Sharp.IconFont.Auto;
             iconButtonConnectToSerial.IconSize = 19;
             iconButtonConnectToSerial.ImageAlign = ContentAlignment.MiddleLeft;
-            iconButtonConnectToSerial.Location = new Point(755, 238);
+            iconButtonConnectToSerial.Location = new Point(894, 282);
             iconButtonConnectToSerial.Name = "iconButtonConnectToSerial";
             iconButtonConnectToSerial.Size = new Size(139, 24);
             iconButtonConnectToSerial.TabIndex = 28;
@@ -509,7 +621,7 @@
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(907, 298);
+            tabPage2.Size = new Size(1046, 342);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Tasmota";
             // 
@@ -574,7 +686,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(906, 636);
+            ClientSize = new Size(1045, 703);
             Controls.Add(groupBox5);
             Controls.Add(statusStrip1);
             Controls.Add(tabControl1);
@@ -600,6 +712,9 @@
             groupBox8.PerformLayout();
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
+            groupBox10.ResumeLayout(false);
+            groupBox11.ResumeLayout(false);
+            groupBox11.PerformLayout();
             tabPage2.ResumeLayout(false);
             groupBox9.ResumeLayout(false);
             groupBox9.PerformLayout();
@@ -650,5 +765,14 @@
         private Label labelDownloadTasmotaBin;
         private LinkLabel linkLabelOpenTasmotaFirmwares;
         private FontAwesome.Sharp.IconButton iconButtonOpenEspDocsDatabase;
+        private FontAwesome.Sharp.IconButton iconButtonSaveFirmware;
+        private FontAwesome.Sharp.IconButton iconButtonResetDevice;
+        private GroupBox groupBox10;
+        private GroupBox groupBox11;
+        private ComboBox comboBoxBackupFirmFrom;
+        private ComboBox comboBoxBackupFirmTo;
+        private ToolTip toolTipInfo;
+        private CheckBox checkBoxCustomSavePartTo;
+        private CheckBox checkBoxCustomSavePartFrom;
     }
 }

@@ -9,6 +9,8 @@ namespace FlashEx
     public partial class Form1 : Form
     {
 
+        // TODO: Button for reset device
+
         public Form1()
         {
             InitializeComponent();
@@ -109,25 +111,110 @@ namespace FlashEx
 
 
 
-
+        // Erase Flash
         private async void iconButtonEraseFlash_Click(object sender, EventArgs e)
         {
-            if (SelectedCOMPort != "")
-            {
-                DisableInputs();
-                ActionStatus("Erase Flash...", "orange");
-
-                string EraseFlash = $" --port {SelectedCOMPort} erase_flash";
-
-                await ExecuteCommand(EraseFlash);
-
-                EnableInputs();
-                ActionStatus("Erase Done!", "green");
-            }
-            else
+            if (SelectedCOMPort == "")
             {
                 MessageBox.Show("Select Serial Port...", "FlashEx", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+
+            DisableInputs();
+            ActionStatus("Erase Flash...", "orange");
+
+            string EraseFlash = $" --port {SelectedCOMPort} erase_flash";
+
+            await ExecuteCommand(EraseFlash);
+
+            EnableInputs();
+            ActionStatus("Erase Done!", "green");
+
+        }
+
+        // Reset device state (run code on device)
+        private async void iconButtonResetDevice_Click(object sender, EventArgs e)
+        {
+            if (SelectedCOMPort == "")
+            {
+                MessageBox.Show("Select Serial Port...", "FlashEx", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DisableInputs();
+            ActionStatus("Reset device state...", "orange");
+
+            string ResetDeviceState = $" --port {SelectedCOMPort} run";
+
+            await ExecuteCommand(ResetDeviceState);
+
+            EnableInputs();
+            ActionStatus("Reset device state done!", "green");
+        }
+
+        private async void iconButtonSaveFirmware_Click(object sender, EventArgs e)
+        {
+
+            // Currently used variables
+            string FirmwarePartitionFrom = comboBoxBackupFirmFrom.Text;
+            string FirmwarePartitionTo = comboBoxBackupFirmTo.Text;
+            string FirmwareBackupName = "";
+            string GetBaudRate = comboBoxBaudRate.Text;
+
+            // Check Partition "from" is set
+            if (FirmwarePartitionFrom == "")
+            {
+                MessageBox.Show("Select 'Firmware Partition From'...", "FlashEx", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Check Partition "to" is set
+            if (FirmwarePartitionTo == "")
+            {
+                MessageBox.Show("Select 'Firmware Partition To'...", "FlashEx", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Check Port is set
+            if (SelectedCOMPort == "")
+            {
+                MessageBox.Show("Select Serial Port...", "FlashEx", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Check BaudRate is set
+            if (GetBaudRate == "")
+            {
+                MessageBox.Show("Select Baud Rate...", "FlashEx", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Save file dialog
+            SaveFileDialog saveFirmwareFile = new SaveFileDialog();
+            saveFirmwareFile.Filter = "bin file|*.bin";
+            saveFirmwareFile.Title = "Save bin file";
+            saveFirmwareFile.ShowDialog();
+
+            // Save path can not be emty
+            if (saveFirmwareFile.FileName == "")
+            {
+                MessageBox.Show("Select Baud Rate...", "FlashEx", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Firmware path & filename
+            FirmwareBackupName = saveFirmwareFile.FileName;
+
+            DisableInputs();
+            ActionStatus("Backup Flash (long process! 4MB ~6min)...", "orange");
+
+            string BackupFlash = $" --port {SelectedCOMPort} --baud {GetBaudRate} read_flash {FirmwarePartitionFrom} {FirmwarePartitionTo} {FirmwareBackupName}";
+
+            await ExecuteCommand(BackupFlash);
+
+            EnableInputs();
+            ActionStatus("Backup Done!", "green");
+
         }
 
 
@@ -441,6 +528,32 @@ namespace FlashEx
             }
         }
 
+        // Make Save Partition 'From' input writeable
+        private void checkBoxCustomSavePartFrom_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (checkBoxCustomSavePartFrom.Checked)
+            {
+                comboBoxBackupFirmFrom.DropDownStyle = ComboBoxStyle.DropDown;
+            }
+            else
+            {
+                comboBoxBackupFirmFrom.DropDownStyle = ComboBoxStyle.DropDownList;
+            }
+        }
+
+        // Make Save Partition 'To' input writeable
+        private void checkBoxCustomSavePartTo_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (checkBoxCustomSavePartTo.Checked)
+            {
+                comboBoxBackupFirmTo.DropDownStyle = ComboBoxStyle.DropDown;
+            }
+            else
+            {
+                comboBoxBackupFirmTo.DropDownStyle = ComboBoxStyle.DropDownList;
+            }
+        }
+
 
         private void iconButtonOpenEspDocsDatabase_Click(object sender, EventArgs e)
         {
@@ -521,6 +634,10 @@ namespace FlashEx
             comboBoxComPorts.Enabled = false;
             comboBoxBaudRate.Enabled = false;
             comboBoxPartitionTable.Enabled = false;
+            comboBoxBackupFirmFrom.Enabled = false;
+            comboBoxBackupFirmTo.Enabled = false;
+            iconButtonSaveFirmware.Enabled = false;
+            iconButtonResetDevice.Enabled = false;
         }
 
         // Enable UI elements
@@ -535,6 +652,10 @@ namespace FlashEx
             comboBoxComPorts.Enabled = true;
             comboBoxBaudRate.Enabled = true;
             comboBoxPartitionTable.Enabled = true;
+            comboBoxBackupFirmFrom.Enabled = true;
+            comboBoxBackupFirmTo.Enabled = true;
+            iconButtonSaveFirmware.Enabled = true;
+            iconButtonResetDevice.Enabled = true;
         }
 
 
