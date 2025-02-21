@@ -29,11 +29,11 @@ If you want to add more items into `Database` just
 ## Screenshots
 
 <p align="center">
-    <img src=./ProjectImages/MainPage.png>    
+    <img src=./ProjectImages/MainPage1.png>    
 </p>
 
 <p align="center">
-    <img src=./ProjectImages/TasmotaPage.png>    
+    <img src=./ProjectImages/TasmotaPage1.png>    
 </p>
 
 <p align="center">
