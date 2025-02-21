@@ -10,8 +10,11 @@ This tool created for my self for fun but I decided to share with others :coffee
 - Monitor Serial Port
 - Read info from ESP devices
 - Set WIFI credentials for Tasmota firmwares
-- Download Tasmota and any custom configured URLs firmwares
+- Set MQTT credentials for Tasmota firmwares
+- Download Tasmota and any custom configured URLs firmware
 - Customizable Database for dataseets and one summary picture of the device
+- Debug: Send commands to device
+- App will save the last used firmware and baudrate
 
 ## Settings
 Add more firmware urls: `config/firmware_urls.txt`
