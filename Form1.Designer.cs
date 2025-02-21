@@ -63,9 +63,14 @@
             label1 = new Label();
             label2 = new Label();
             groupBox8 = new GroupBox();
-            textBox1 = new TextBox();
+            linkLabelWifiMqttConfigSite1 = new LinkLabel();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            groupBox13 = new GroupBox();
+            label7 = new Label();
+            checkBoxDebugEnable = new CheckBox();
+            comboBoxDebugBaudrate = new ComboBox();
+            textBoxDebugConsoleInput = new TextBox();
             groupBox10 = new GroupBox();
             groupBox11 = new GroupBox();
             checkBoxCustomSavePartTo = new CheckBox();
@@ -74,6 +79,17 @@
             comboBoxBackupFirmTo = new ComboBox();
             iconButtonConnectToSerial = new FontAwesome.Sharp.IconButton();
             tabPage2 = new TabPage();
+            groupBox12 = new GroupBox();
+            linkLabelWifiMqttConfigSite2 = new LinkLabel();
+            iconButtonTasmotaSetMqtt = new FontAwesome.Sharp.IconButton();
+            label6 = new Label();
+            textBoxMqttCustomTopic = new TextBox();
+            textBoxMqttPasswd = new TextBox();
+            label5 = new Label();
+            textBoxMqttUser = new TextBox();
+            textBoxMqttHost = new TextBox();
+            label4 = new Label();
+            label3 = new Label();
             groupBox9 = new GroupBox();
             linkLabelOpenTasmotaFirmwares = new LinkLabel();
             labelDownloadTasmotaBin = new Label();
@@ -91,9 +107,11 @@
             groupBox8.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
+            groupBox13.SuspendLayout();
             groupBox10.SuspendLayout();
             groupBox11.SuspendLayout();
             tabPage2.SuspendLayout();
+            groupBox12.SuspendLayout();
             groupBox9.SuspendLayout();
             SuspendLayout();
             // 
@@ -156,7 +174,7 @@
             // buttonInitFlashProcess
             // 
             buttonInitFlashProcess.ForeColor = SystemColors.WindowText;
-            buttonInitFlashProcess.IconChar = FontAwesome.Sharp.IconChar.Zap;
+            buttonInitFlashProcess.IconChar = FontAwesome.Sharp.IconChar.Bolt;
             buttonInitFlashProcess.IconColor = Color.Green;
             buttonInitFlashProcess.IconFont = FontAwesome.Sharp.IconFont.Auto;
             buttonInitFlashProcess.IconSize = 23;
@@ -173,7 +191,7 @@
             // 
             comboBoxBaudRate.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxBaudRate.FormattingEnabled = true;
-            comboBoxBaudRate.Items.AddRange(new object[] { "110", "300", "600", "1200", "2400", "4800", "9600", "14400", "19200", "38400", "57600", "115200", "128000", "256000" });
+            comboBoxBaudRate.Items.AddRange(new object[] { "110", "300", "600", "1200", "2400", "4800", "9600", "14400", "19200", "38400", "57600", "115200", "128000", "256000", "460800", "576000", "921600" });
             comboBoxBaudRate.Location = new Point(6, 22);
             comboBoxBaudRate.Name = "comboBoxBaudRate";
             comboBoxBaudRate.Size = new Size(122, 23);
@@ -221,7 +239,7 @@
             // 
             // iconButtonReadESPInfo
             // 
-            iconButtonReadESPInfo.IconChar = FontAwesome.Sharp.IconChar.InfoCircle;
+            iconButtonReadESPInfo.IconChar = FontAwesome.Sharp.IconChar.CircleInfo;
             iconButtonReadESPInfo.IconColor = Color.SteelBlue;
             iconButtonReadESPInfo.IconFont = FontAwesome.Sharp.IconFont.Auto;
             iconButtonReadESPInfo.IconSize = 19;
@@ -313,7 +331,7 @@
             // 
             // iconButtonImageInfo
             // 
-            iconButtonImageInfo.IconChar = FontAwesome.Sharp.IconChar.InfoCircle;
+            iconButtonImageInfo.IconChar = FontAwesome.Sharp.IconChar.CircleInfo;
             iconButtonImageInfo.IconColor = Color.SteelBlue;
             iconButtonImageInfo.IconFont = FontAwesome.Sharp.IconFont.Auto;
             iconButtonImageInfo.IconSize = 19;
@@ -415,14 +433,14 @@
             // 
             // iconButtonTasmotaSetWifi
             // 
-            iconButtonTasmotaSetWifi.IconChar = FontAwesome.Sharp.IconChar.Wifi3;
+            iconButtonTasmotaSetWifi.IconChar = FontAwesome.Sharp.IconChar.Wifi;
             iconButtonTasmotaSetWifi.IconColor = Color.Black;
             iconButtonTasmotaSetWifi.IconFont = FontAwesome.Sharp.IconFont.Auto;
             iconButtonTasmotaSetWifi.IconSize = 19;
             iconButtonTasmotaSetWifi.ImageAlign = ContentAlignment.MiddleLeft;
-            iconButtonTasmotaSetWifi.Location = new Point(8, 75);
+            iconButtonTasmotaSetWifi.Location = new Point(6, 137);
             iconButtonTasmotaSetWifi.Name = "iconButtonTasmotaSetWifi";
-            iconButtonTasmotaSetWifi.Size = new Size(209, 24);
+            iconButtonTasmotaSetWifi.Size = new Size(213, 24);
             iconButtonTasmotaSetWifi.TabIndex = 26;
             iconButtonTasmotaSetWifi.Text = "Set Wifi";
             iconButtonTasmotaSetWifi.UseVisualStyleBackColor = true;
@@ -478,7 +496,7 @@
             // 
             // groupBox8
             // 
-            groupBox8.Controls.Add(textBox1);
+            groupBox8.Controls.Add(linkLabelWifiMqttConfigSite1);
             groupBox8.Controls.Add(textBoxTasmotaWifiSSID);
             groupBox8.Controls.Add(label2);
             groupBox8.Controls.Add(iconButtonTasmotaSetWifi);
@@ -486,22 +504,22 @@
             groupBox8.Controls.Add(label1);
             groupBox8.Location = new Point(6, 6);
             groupBox8.Name = "groupBox8";
-            groupBox8.Size = new Size(225, 153);
+            groupBox8.Size = new Size(225, 188);
             groupBox8.TabIndex = 32;
             groupBox8.TabStop = false;
-            groupBox8.Text = "Set Wifi";
+            groupBox8.Text = "Set Wifi (info)";
+            toolTipInfo.SetToolTip(groupBox8, "Reset device then after 2 seconds press 'Set Wifi' button.\r\nFYI: Not all baudrate supported. Use : 115200 bps");
             // 
-            // textBox1
+            // linkLabelWifiMqttConfigSite1
             // 
-            textBox1.Enabled = false;
-            textBox1.Location = new Point(6, 105);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new Size(211, 39);
-            textBox1.TabIndex = 33;
-            textBox1.Text = "Reset device then after 2 seconds press 'Set Wifi' button.";
-            textBox1.TextAlign = HorizontalAlignment.Center;
+            linkLabelWifiMqttConfigSite1.AutoSize = true;
+            linkLabelWifiMqttConfigSite1.Location = new Point(6, 170);
+            linkLabelWifiMqttConfigSite1.Name = "linkLabelWifiMqttConfigSite1";
+            linkLabelWifiMqttConfigSite1.Size = new Size(80, 15);
+            linkLabelWifiMqttConfigSite1.TabIndex = 36;
+            linkLabelWifiMqttConfigSite1.TabStop = true;
+            linkLabelWifiMqttConfigSite1.Text = "Tasmota Docs";
+            linkLabelWifiMqttConfigSite1.LinkClicked += linkLabelWifiMqttConfigSite1_LinkClicked;
             // 
             // tabControl1
             // 
@@ -516,6 +534,7 @@
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(groupBox13);
             tabPage1.Controls.Add(groupBox10);
             tabPage1.Controls.Add(iconButtonConnectToSerial);
             tabPage1.Controls.Add(groupBox3);
@@ -531,6 +550,58 @@
             tabPage1.Size = new Size(1046, 342);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Main";
+            // 
+            // groupBox13
+            // 
+            groupBox13.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            groupBox13.Controls.Add(label7);
+            groupBox13.Controls.Add(checkBoxDebugEnable);
+            groupBox13.Controls.Add(comboBoxDebugBaudrate);
+            groupBox13.Controls.Add(textBoxDebugConsoleInput);
+            groupBox13.Location = new Point(773, 101);
+            groupBox13.Name = "groupBox13";
+            groupBox13.Size = new Size(260, 81);
+            groupBox13.TabIndex = 30;
+            groupBox13.TabStop = false;
+            groupBox13.Text = "Debug                                       ";
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(8, 27);
+            label7.Name = "label7";
+            label7.Size = new Size(95, 15);
+            label7.TabIndex = 4;
+            label7.Text = "Debug Baudrate:";
+            // 
+            // checkBoxDebugEnable
+            // 
+            checkBoxDebugEnable.AutoSize = true;
+            checkBoxDebugEnable.Location = new Point(53, -1);
+            checkBoxDebugEnable.Name = "checkBoxDebugEnable";
+            checkBoxDebugEnable.Size = new Size(130, 19);
+            checkBoxDebugEnable.TabIndex = 3;
+            checkBoxDebugEnable.Text = "Enable debug (info)";
+            toolTipInfo.SetToolTip(checkBoxDebugEnable, "Enable debug & custom baudrate. This will disable main baudrate config.\r\nEnable this feature and click to 'Connect Serial' button.\r\nThen you can send custom commands to device.");
+            checkBoxDebugEnable.UseVisualStyleBackColor = true;
+            checkBoxDebugEnable.CheckedChanged += checkBoxDebugEnable_CheckedChanged;
+            // 
+            // comboBoxDebugBaudrate
+            // 
+            comboBoxDebugBaudrate.FormattingEnabled = true;
+            comboBoxDebugBaudrate.Items.AddRange(new object[] { "110", "300", "600", "1200", "2400", "4800", "9600", "14400", "19200", "38400", "57600", "115200", "128000", "256000", "460800", "576000", "921600" });
+            comboBoxDebugBaudrate.Location = new Point(109, 24);
+            comboBoxDebugBaudrate.Name = "comboBoxDebugBaudrate";
+            comboBoxDebugBaudrate.Size = new Size(143, 23);
+            comboBoxDebugBaudrate.TabIndex = 2;
+            // 
+            // textBoxDebugConsoleInput
+            // 
+            textBoxDebugConsoleInput.Location = new Point(8, 51);
+            textBoxDebugConsoleInput.Name = "textBoxDebugConsoleInput";
+            textBoxDebugConsoleInput.Size = new Size(246, 23);
+            textBoxDebugConsoleInput.TabIndex = 1;
+            textBoxDebugConsoleInput.KeyDown += textBoxDebugConsoleInput_KeyDown;
             // 
             // groupBox10
             // 
@@ -616,6 +687,7 @@
             // tabPage2
             // 
             tabPage2.BackColor = SystemColors.Control;
+            tabPage2.Controls.Add(groupBox12);
             tabPage2.Controls.Add(groupBox9);
             tabPage2.Controls.Add(groupBox8);
             tabPage2.Location = new Point(4, 24);
@@ -625,15 +697,125 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Tasmota";
             // 
+            // groupBox12
+            // 
+            groupBox12.Controls.Add(linkLabelWifiMqttConfigSite2);
+            groupBox12.Controls.Add(iconButtonTasmotaSetMqtt);
+            groupBox12.Controls.Add(label6);
+            groupBox12.Controls.Add(textBoxMqttCustomTopic);
+            groupBox12.Controls.Add(textBoxMqttPasswd);
+            groupBox12.Controls.Add(label5);
+            groupBox12.Controls.Add(textBoxMqttUser);
+            groupBox12.Controls.Add(textBoxMqttHost);
+            groupBox12.Controls.Add(label4);
+            groupBox12.Controls.Add(label3);
+            groupBox12.Location = new Point(237, 6);
+            groupBox12.Name = "groupBox12";
+            groupBox12.Size = new Size(225, 188);
+            groupBox12.TabIndex = 35;
+            groupBox12.TabStop = false;
+            groupBox12.Text = "Set MQTT (info)";
+            toolTipInfo.SetToolTip(groupBox12, "Reset device then after 2 seconds press 'Set MQTT' button.\r\nFYI: Not all baudrate supported. Use : 115200 bps");
+            // 
+            // linkLabelWifiMqttConfigSite2
+            // 
+            linkLabelWifiMqttConfigSite2.AutoSize = true;
+            linkLabelWifiMqttConfigSite2.Location = new Point(6, 170);
+            linkLabelWifiMqttConfigSite2.Name = "linkLabelWifiMqttConfigSite2";
+            linkLabelWifiMqttConfigSite2.Size = new Size(80, 15);
+            linkLabelWifiMqttConfigSite2.TabIndex = 37;
+            linkLabelWifiMqttConfigSite2.TabStop = true;
+            linkLabelWifiMqttConfigSite2.Text = "Tasmota Docs";
+            linkLabelWifiMqttConfigSite2.LinkClicked += linkLabelWifiMqttConfigSite2_LinkClicked;
+            // 
+            // iconButtonTasmotaSetMqtt
+            // 
+            iconButtonTasmotaSetMqtt.IconChar = FontAwesome.Sharp.IconChar.Wifi;
+            iconButtonTasmotaSetMqtt.IconColor = Color.Black;
+            iconButtonTasmotaSetMqtt.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            iconButtonTasmotaSetMqtt.IconSize = 19;
+            iconButtonTasmotaSetMqtt.ImageAlign = ContentAlignment.MiddleLeft;
+            iconButtonTasmotaSetMqtt.Location = new Point(6, 138);
+            iconButtonTasmotaSetMqtt.Name = "iconButtonTasmotaSetMqtt";
+            iconButtonTasmotaSetMqtt.Size = new Size(213, 23);
+            iconButtonTasmotaSetMqtt.TabIndex = 37;
+            iconButtonTasmotaSetMqtt.Text = "Set MQTT";
+            iconButtonTasmotaSetMqtt.UseVisualStyleBackColor = true;
+            iconButtonTasmotaSetMqtt.Click += iconButtonTasmotaSetMqtt_Click;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(6, 112);
+            label6.Name = "label6";
+            label6.Size = new Size(38, 15);
+            label6.TabIndex = 7;
+            label6.Text = "Topic:";
+            // 
+            // textBoxMqttCustomTopic
+            // 
+            textBoxMqttCustomTopic.Location = new Point(48, 109);
+            textBoxMqttCustomTopic.Name = "textBoxMqttCustomTopic";
+            textBoxMqttCustomTopic.Size = new Size(169, 23);
+            textBoxMqttCustomTopic.TabIndex = 3;
+            // 
+            // textBoxMqttPasswd
+            // 
+            textBoxMqttPasswd.Location = new Point(48, 80);
+            textBoxMqttPasswd.Name = "textBoxMqttPasswd";
+            textBoxMqttPasswd.Size = new Size(169, 23);
+            textBoxMqttPasswd.TabIndex = 2;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(6, 83);
+            label5.Name = "label5";
+            label5.Size = new Size(36, 15);
+            label5.TabIndex = 6;
+            label5.Text = "PWD:";
+            // 
+            // textBoxMqttUser
+            // 
+            textBoxMqttUser.Location = new Point(48, 51);
+            textBoxMqttUser.Name = "textBoxMqttUser";
+            textBoxMqttUser.Size = new Size(169, 23);
+            textBoxMqttUser.TabIndex = 1;
+            // 
+            // textBoxMqttHost
+            // 
+            textBoxMqttHost.Location = new Point(48, 22);
+            textBoxMqttHost.Name = "textBoxMqttHost";
+            textBoxMqttHost.Size = new Size(169, 23);
+            textBoxMqttHost.TabIndex = 0;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(6, 54);
+            label4.Name = "label4";
+            label4.Size = new Size(33, 15);
+            label4.TabIndex = 5;
+            label4.Text = "User:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(6, 25);
+            label3.Name = "label3";
+            label3.Size = new Size(35, 15);
+            label3.TabIndex = 4;
+            label3.Text = "Host:";
+            // 
             // groupBox9
             // 
             groupBox9.Controls.Add(linkLabelOpenTasmotaFirmwares);
             groupBox9.Controls.Add(labelDownloadTasmotaBin);
             groupBox9.Controls.Add(iconButtonDownloadTasmotaBin);
             groupBox9.Controls.Add(comboBoxTasmotaSource);
-            groupBox9.Location = new Point(237, 6);
+            groupBox9.Location = new Point(468, 6);
             groupBox9.Name = "groupBox9";
-            groupBox9.Size = new Size(347, 153);
+            groupBox9.Size = new Size(347, 102);
             groupBox9.TabIndex = 34;
             groupBox9.TabStop = false;
             groupBox9.Text = "Download";
@@ -712,10 +894,14 @@
             groupBox8.PerformLayout();
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
+            groupBox13.ResumeLayout(false);
+            groupBox13.PerformLayout();
             groupBox10.ResumeLayout(false);
             groupBox11.ResumeLayout(false);
             groupBox11.PerformLayout();
             tabPage2.ResumeLayout(false);
+            groupBox12.ResumeLayout(false);
+            groupBox12.PerformLayout();
             groupBox9.ResumeLayout(false);
             groupBox9.PerformLayout();
             ResumeLayout(false);
@@ -754,7 +940,6 @@
         private TabControl tabControl1;
         private TabPage tabPage1;
         private TabPage tabPage2;
-        private TextBox textBox1;
         private FontAwesome.Sharp.IconButton iconButtonConnectToSerial;
         private ToolStripStatusLabel toolStripStatusLabel1;
         private ToolStripStatusLabel toolStripStatusLabelActionStatus;
@@ -774,5 +959,22 @@
         private ToolTip toolTipInfo;
         private CheckBox checkBoxCustomSavePartTo;
         private CheckBox checkBoxCustomSavePartFrom;
+        private GroupBox groupBox12;
+        private TextBox textBoxMqttCustomTopic;
+        private TextBox textBoxMqttPasswd;
+        private TextBox textBoxMqttUser;
+        private TextBox textBoxMqttHost;
+        private Label label6;
+        private Label label5;
+        private Label label4;
+        private Label label3;
+        private FontAwesome.Sharp.IconButton iconButtonTasmotaSetMqtt;
+        private LinkLabel linkLabelWifiMqttConfigSite2;
+        private LinkLabel linkLabelWifiMqttConfigSite1;
+        private GroupBox groupBox13;
+        private TextBox textBoxDebugConsoleInput;
+        private Label label7;
+        private CheckBox checkBoxDebugEnable;
+        private ComboBox comboBoxDebugBaudrate;
     }
 }

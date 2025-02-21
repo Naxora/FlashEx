@@ -1,3 +1,4 @@
+using System.Configuration;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Management;
@@ -23,7 +24,6 @@ namespace FlashEx
         string FirmwareFileWithPath = "";
         string SelectedCOMPort = "";
 
-
         // Folder Path Defs
         private static readonly string AppExecPath = Path.GetDirectoryName(Application.ExecutablePath) + @"\";
         private static readonly string Firmwares = AppExecPath + @"firmwares\";
@@ -35,10 +35,16 @@ namespace FlashEx
         // Configs
         private static readonly string firmware_urls = Config + @"firmware_urls.txt";
 
+        // XML config file
+        private readonly ExeConfigurationFileMap appConfigMap = new ExeConfigurationFileMap
+        {
+            ExeConfigFilename = Config + "appSettings.xml"
+        };
+
         private void Form1_Load(object sender, EventArgs e)
         {
             // App and esptool version
-            this.Text = "FlashEx v1.3 | esptool v4.7.0";
+            this.Text = "FlashEx v1.4 | esptool v4.8.1";
 
             // Get a list of serial port names
             GetAvailableSerialPorts();
@@ -49,11 +55,36 @@ namespace FlashEx
                 comboBoxTasmotaSource.Items.Add(line);
             }
 
-            // Default selected Baudrate
-            comboBoxBaudRate.SelectedItem = "115200";
+
+            // Config file
+            Configuration customConfig = ConfigurationManager.OpenMappedExeConfiguration(appConfigMap, ConfigurationUserLevel.None);
+            AppSettingsSection appSettings = (customConfig.GetSection("appSettings") as AppSettingsSection);
+
+
+            // Load - Last used Baud Rate
+            if (appSettings.Settings["Saved_BaudRate"] != null)
+            {
+                comboBoxBaudRate.Text = appSettings.Settings["Saved_BaudRate"].Value;
+            }
+            else
+            {
+                // Default selected Baudrate
+                comboBoxBaudRate.SelectedItem = "115200";
+            }
+
+            // Load - Last used BIN file
+            if (appSettings.Settings["Saved_BinFileAndPath"] != null)
+            {
+                FirmwareFileWithPath = appSettings.Settings["Saved_BinFileAndPath"].Value;
+                labelSelectedFWName.Text = Path.GetFileName(FirmwareFileWithPath);
+            }
 
             // Default selected Partition
             comboBoxPartitionTable.SelectedItem = "0x0";
+
+
+            // Debug default selected Baudrate
+            comboBoxDebugBaudrate.SelectedItem = "115200";
 
         }
 
@@ -280,10 +311,26 @@ namespace FlashEx
             SerialPortCommunication("SetTasmotaWifi");
         }
 
+        // Set MQTT credentials for Tasmota devices
+        private void iconButtonTasmotaSetMqtt_Click(object sender, EventArgs e)
+        {
+            SerialPortCommunication("SetTasmotaMQTT");
+        }
+
         // Open tasmota firmware releases site
         private void linkLabelOpenTasmotaFirmwares_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             OpenLinBrowser("https://ota.tasmota.com/tasmota/release");
+        }
+
+        private void linkLabelWifiMqttConfigSite1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenLinBrowser("https://tasmota.github.io/docs/Commands/#over-serial-bridge");
+        }
+
+        private void linkLabelWifiMqttConfigSite2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            OpenLinBrowser("https://tasmota.github.io/docs/Commands/#over-serial-bridge");
         }
 
         // Download Tasmote Firmwares
@@ -363,7 +410,7 @@ namespace FlashEx
         // Connect to Serial Port
         private void iconButtonConnectToSerial_Click(object sender, EventArgs e)
         {
-            SerialPortCommunication("");
+            SerialPortCommunication("initConnectionOnly");
         }
 
         // Disconnect to Serial Port
@@ -428,13 +475,50 @@ namespace FlashEx
 
                 // Set exec params
                 TaskCommand = $"Backlog SSID1 {textBoxTasmotaWifiSSID.Text}; Password1 {textBoxTasmotaWifiPassword.Text};";
-                ActionStatus("WIFI is almost set! Check the logs for the IP | FIY: Use 'Disconnect' from 'Main' tab to close Serial communication.", "green");
+                ActionStatus("WIFI is almost set! Check the logs for the IP | HINT: Use 'Disconnect' from 'Main' tab to close Serial communication.", "green");
+            }
+
+
+            // Set Tasmota MQTT credentials
+            if (task == "SetTasmotaMQTT")
+            {
+                // Check MQTT Host is set
+                if (textBoxMqttHost.Text == "")
+                {
+                    MessageBox.Show("Set MQTT Host...", "FlashEx", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Set MQTT User is set
+                if (textBoxMqttUser.Text == "")
+                {
+                    MessageBox.Show("Set MQTT User...", "FlashEx", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Set MQTT Password is set
+                if (textBoxMqttPasswd.Text == "")
+                {
+                    MessageBox.Show("Set MQTT Password...", "FlashEx", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Set MQTT Topic is set
+                if (textBoxMqttCustomTopic.Text == "")
+                {
+                    MessageBox.Show("Set MQTT Topic...", "FlashEx", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Set exec params
+                TaskCommand = $"Backlog MqttHost {textBoxMqttHost.Text}; MqttUser {textBoxMqttUser.Text}; MqttPassword {textBoxMqttPasswd.Text}; Topic {textBoxMqttCustomTopic.Text}; SetOption53 1; PowerRetain on";
+                ActionStatus("HINT: Use 'Disconnect' from 'Main' tab to close Serial communication.", "green");
             }
 
 
 
             // Just connect to Serial Port
-            else if (task == "")
+            else if (task == "initConnectionOnly")
             {
                 iconButtonConnectToSerial.Enabled = false;
                 ActionStatus($"{SelectedCOMPort} Connected!", "orange");
@@ -443,8 +527,20 @@ namespace FlashEx
             // Disable UI buttons
             DisableInputs();
 
+
+            // comboBoxDebugBaudrate.Text
+            int SelectedBaudRate;
+            if (checkBoxDebugEnable.Checked == true)
+            {
+                SelectedBaudRate = Int32.Parse(comboBoxDebugBaudrate.Text);
+            }
+            else
+            {
+                SelectedBaudRate = Int32.Parse(comboBoxBaudRate.Text);
+            }
+
             // Init Serial Communication
-            BuiltInSerialPort = new SerialPort(SelectedCOMPort, Int32.Parse(comboBoxBaudRate.Text), Parity.None, 8, StopBits.One);
+            BuiltInSerialPort = new SerialPort(SelectedCOMPort, SelectedBaudRate, Parity.None, 8, StopBits.One);
 
             // Open Serial Communication
             BuiltInSerialPort.Open();
@@ -638,6 +734,7 @@ namespace FlashEx
             comboBoxBackupFirmTo.Enabled = false;
             iconButtonSaveFirmware.Enabled = false;
             iconButtonResetDevice.Enabled = false;
+
         }
 
         // Enable UI elements
@@ -778,6 +875,15 @@ namespace FlashEx
                 BuiltInSerialPort.Close();
             }
 
+
+            // Save process //
+
+            // Save - Baud Rate
+            saveSettings("Saved_BaudRate", comboBoxBaudRate.Text);
+
+            // Save - BIN file name with Path
+            saveSettings("Saved_BinFileAndPath", FirmwareFileWithPath);
+
         }
 
 
@@ -790,6 +896,57 @@ namespace FlashEx
             });
         }
 
+        // Save settings function
+        private void saveSettings(string key, string val)
+        {
 
+            Configuration customConfig = ConfigurationManager.OpenMappedExeConfiguration(appConfigMap, ConfigurationUserLevel.None);
+            AppSettingsSection appSettings = (customConfig.GetSection("appSettings") as AppSettingsSection);
+
+            // Add/Update keys and values in config file
+            if (appSettings.Settings[key] == null)
+            {
+                appSettings.Settings.Add(key, val);
+            }
+            else
+            {
+                appSettings.Settings[key].Value = val;
+            }
+
+            customConfig.Save();
+        }
+
+        // DEBUG Connection
+        private void checkBoxDebugEnable_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxDebugEnable.Checked == true)
+            {
+                checkBoxDebugEnable.ForeColor = Color.Red;
+            }
+            else
+            {
+                checkBoxDebugEnable.ForeColor = Color.Black;
+            }
+        }
+
+        private void textBoxDebugConsoleInput_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+            if (e.KeyCode == Keys.Enter)
+            {
+                // Supress sound
+                e.SuppressKeyPress = true;
+
+                try
+                {
+                    BuiltInSerialPort.WriteLine($"{textBoxDebugConsoleInput.Text}\r");
+                    textBoxDebugConsoleInput.Text = "";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
     }
 }
