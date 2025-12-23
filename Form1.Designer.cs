@@ -49,6 +49,7 @@
             checkBoxCustomPartitionTableBool = new CheckBox();
             comboBoxPartitionTable = new ComboBox();
             groupBox5 = new GroupBox();
+            iconButtonClearTerminal = new FontAwesome.Sharp.IconButton();
             iconButtonImageInfo = new FontAwesome.Sharp.IconButton();
             groupBox6 = new GroupBox();
             iconButtonOpenEspDocsDatabase = new FontAwesome.Sharp.IconButton();
@@ -233,7 +234,7 @@
             richTextBoxConsoleLog.Name = "richTextBoxConsoleLog";
             richTextBoxConsoleLog.ReadOnly = true;
             richTextBoxConsoleLog.ScrollBars = RichTextBoxScrollBars.Vertical;
-            richTextBoxConsoleLog.Size = new Size(1061, 281);
+            richTextBoxConsoleLog.Size = new Size(1062, 281);
             richTextBoxConsoleLog.TabIndex = 16;
             richTextBoxConsoleLog.Text = "";
             // 
@@ -321,6 +322,7 @@
             // groupBox5
             // 
             groupBox5.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            groupBox5.Controls.Add(iconButtonClearTerminal);
             groupBox5.Controls.Add(richTextBoxConsoleLog);
             groupBox5.Location = new Point(0, 376);
             groupBox5.Name = "groupBox5";
@@ -328,6 +330,20 @@
             groupBox5.TabIndex = 22;
             groupBox5.TabStop = false;
             groupBox5.Text = "Console Log";
+            // 
+            // iconButtonClearTerminal
+            // 
+            iconButtonClearTerminal.IconChar = FontAwesome.Sharp.IconChar.BroomBall;
+            iconButtonClearTerminal.IconColor = Color.Black;
+            iconButtonClearTerminal.IconFont = FontAwesome.Sharp.IconFont.Auto;
+            iconButtonClearTerminal.IconSize = 24;
+            iconButtonClearTerminal.Location = new Point(1020, -1);
+            iconButtonClearTerminal.Name = "iconButtonClearTerminal";
+            iconButtonClearTerminal.Size = new Size(24, 22);
+            iconButtonClearTerminal.TabIndex = 31;
+            toolTipInfo.SetToolTip(iconButtonClearTerminal, "Clear terminal");
+            iconButtonClearTerminal.UseVisualStyleBackColor = true;
+            iconButtonClearTerminal.Click += iconButtonClearTerminal_Click;
             // 
             // iconButtonImageInfo
             // 
@@ -515,7 +531,7 @@
             linkLabelWifiMqttConfigSite1.AutoSize = true;
             linkLabelWifiMqttConfigSite1.Location = new Point(6, 170);
             linkLabelWifiMqttConfigSite1.Name = "linkLabelWifiMqttConfigSite1";
-            linkLabelWifiMqttConfigSite1.Size = new Size(80, 15);
+            linkLabelWifiMqttConfigSite1.Size = new Size(81, 15);
             linkLabelWifiMqttConfigSite1.TabIndex = 36;
             linkLabelWifiMqttConfigSite1.TabStop = true;
             linkLabelWifiMqttConfigSite1.Text = "Tasmota Docs";
@@ -582,7 +598,7 @@
             checkBoxDebugEnable.Size = new Size(130, 19);
             checkBoxDebugEnable.TabIndex = 3;
             checkBoxDebugEnable.Text = "Enable debug (info)";
-            toolTipInfo.SetToolTip(checkBoxDebugEnable, "Enable debug & custom baudrate. This will disable main baudrate config.\r\nEnable this feature and click to 'Connect Serial' button.\r\nThen you can send custom commands to device.");
+            toolTipInfo.SetToolTip(checkBoxDebugEnable, "Enable debug & custom baudrate. This will disable the main baud rate configuration.\r\nEnable this feature and click to 'Connect Serial' button.\r\nThen you can send custom commands to device.");
             checkBoxDebugEnable.UseVisualStyleBackColor = true;
             checkBoxDebugEnable.CheckedChanged += checkBoxDebugEnable_CheckedChanged;
             // 
@@ -722,7 +738,7 @@
             linkLabelWifiMqttConfigSite2.AutoSize = true;
             linkLabelWifiMqttConfigSite2.Location = new Point(6, 170);
             linkLabelWifiMqttConfigSite2.Name = "linkLabelWifiMqttConfigSite2";
-            linkLabelWifiMqttConfigSite2.Size = new Size(80, 15);
+            linkLabelWifiMqttConfigSite2.Size = new Size(81, 15);
             linkLabelWifiMqttConfigSite2.TabIndex = 37;
             linkLabelWifiMqttConfigSite2.TabStop = true;
             linkLabelWifiMqttConfigSite2.Text = "Tasmota Docs";
@@ -748,7 +764,7 @@
             label6.AutoSize = true;
             label6.Location = new Point(6, 112);
             label6.Name = "label6";
-            label6.Size = new Size(38, 15);
+            label6.Size = new Size(39, 15);
             label6.TabIndex = 7;
             label6.Text = "Topic:";
             // 
@@ -815,7 +831,7 @@
             groupBox9.Controls.Add(comboBoxTasmotaSource);
             groupBox9.Location = new Point(468, 6);
             groupBox9.Name = "groupBox9";
-            groupBox9.Size = new Size(347, 102);
+            groupBox9.Size = new Size(252, 102);
             groupBox9.TabIndex = 34;
             groupBox9.TabStop = false;
             groupBox9.Text = "Download";
@@ -825,7 +841,7 @@
             linkLabelOpenTasmotaFirmwares.AutoSize = true;
             linkLabelOpenTasmotaFirmwares.Location = new Point(6, 84);
             linkLabelOpenTasmotaFirmwares.Name = "linkLabelOpenTasmotaFirmwares";
-            linkLabelOpenTasmotaFirmwares.Size = new Size(98, 15);
+            linkLabelOpenTasmotaFirmwares.Size = new Size(99, 15);
             linkLabelOpenTasmotaFirmwares.TabIndex = 36;
             linkLabelOpenTasmotaFirmwares.TabStop = true;
             linkLabelOpenTasmotaFirmwares.Text = "Tasmota Releases";
@@ -834,7 +850,7 @@
             // labelDownloadTasmotaBin
             // 
             labelDownloadTasmotaBin.AutoSize = true;
-            labelDownloadTasmotaBin.Location = new Point(295, 55);
+            labelDownloadTasmotaBin.Location = new Point(200, 56);
             labelDownloadTasmotaBin.Name = "labelDownloadTasmotaBin";
             labelDownloadTasmotaBin.Size = new Size(46, 15);
             labelDownloadTasmotaBin.TabIndex = 35;
@@ -849,7 +865,7 @@
             iconButtonDownloadTasmotaBin.ImageAlign = ContentAlignment.MiddleLeft;
             iconButtonDownloadTasmotaBin.Location = new Point(6, 51);
             iconButtonDownloadTasmotaBin.Name = "iconButtonDownloadTasmotaBin";
-            iconButtonDownloadTasmotaBin.Size = new Size(283, 23);
+            iconButtonDownloadTasmotaBin.Size = new Size(188, 23);
             iconButtonDownloadTasmotaBin.TabIndex = 34;
             iconButtonDownloadTasmotaBin.Text = "Download";
             iconButtonDownloadTasmotaBin.UseVisualStyleBackColor = true;
@@ -861,7 +877,7 @@
             comboBoxTasmotaSource.FormattingEnabled = true;
             comboBoxTasmotaSource.Location = new Point(6, 22);
             comboBoxTasmotaSource.Name = "comboBoxTasmotaSource";
-            comboBoxTasmotaSource.Size = new Size(335, 23);
+            comboBoxTasmotaSource.Size = new Size(240, 23);
             comboBoxTasmotaSource.TabIndex = 33;
             // 
             // Form1
@@ -976,5 +992,6 @@
         private Label label7;
         private CheckBox checkBoxDebugEnable;
         private ComboBox comboBoxDebugBaudrate;
+        private FontAwesome.Sharp.IconButton iconButtonClearTerminal;
     }
 }

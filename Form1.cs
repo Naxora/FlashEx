@@ -10,8 +10,6 @@ namespace FlashEx
     public partial class Form1 : Form
     {
 
-        // TODO: Button for reset device
-
         public Form1()
         {
             InitializeComponent();
@@ -23,6 +21,9 @@ namespace FlashEx
         SerialPort BuiltInSerialPort = new();
         string FirmwareFileWithPath = "";
         string SelectedCOMPort = "";
+
+        // Custom firmwares list
+        string firmwareUrl = "";
 
         // Folder Path Defs
         private static readonly string AppExecPath = Path.GetDirectoryName(Application.ExecutablePath) + @"\";
@@ -41,20 +42,35 @@ namespace FlashEx
             ExeConfigFilename = Config + "appSettings.xml"
         };
 
+        // Class for custom firmwares list
+        public class DownloadItem
+        {
+            public string Name { get; set; } = "";
+            public string Url { get; set; } = "";
+
+            public override string ToString()
+            {
+                return Name;
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             // App and esptool version
-            this.Text = "FlashEx v1.4 | esptool v4.8.1";
+            this.Text = "FlashEx v1.5 | esptool v5.1.0";
 
             // Get a list of serial port names
             GetAvailableSerialPorts();
 
             // Read tasmota firmwares from file
-            foreach (string line in File.ReadLines(firmware_urls))
+            foreach (var line in File.ReadAllLines(firmware_urls))
             {
-                comboBoxTasmotaSource.Items.Add(line);
+                comboBoxTasmotaSource.Items.Add(new DownloadItem
+                {
+                    Url = line,
+                    Name = Path.GetFileName(line) // e.g.: tasmota32.bin
+                });
             }
-
 
             // Config file
             Configuration customConfig = ConfigurationManager.OpenMappedExeConfiguration(appConfigMap, ConfigurationUserLevel.None);
@@ -131,7 +147,7 @@ namespace FlashEx
 
             DisableInputs();
 
-            string WriteFirmware = $" --port {SelectedCOMPort} --baud {comboBoxBaudRate.Text} write_flash {comboBoxPartitionTable.Text} {FirmwareFileWithPath}";
+            string WriteFirmware = $" --port {SelectedCOMPort} --baud {comboBoxBaudRate.Text} write-flash {comboBoxPartitionTable.Text} {FirmwareFileWithPath}";
 
             await ExecuteCommand(WriteFirmware);
 
@@ -154,7 +170,7 @@ namespace FlashEx
             DisableInputs();
             ActionStatus("Erase Flash...", "orange");
 
-            string EraseFlash = $" --port {SelectedCOMPort} erase_flash";
+            string EraseFlash = $" --port {SelectedCOMPort} erase-flash";
 
             await ExecuteCommand(EraseFlash);
 
@@ -239,7 +255,7 @@ namespace FlashEx
             DisableInputs();
             ActionStatus("Backup Flash (long process! 4MB ~6min)...", "orange");
 
-            string BackupFlash = $" --port {SelectedCOMPort} --baud {GetBaudRate} read_flash {FirmwarePartitionFrom} {FirmwarePartitionTo} {FirmwareBackupName}";
+            string BackupFlash = $" --port {SelectedCOMPort} --baud {GetBaudRate} read-flash {FirmwarePartitionFrom} {FirmwarePartitionTo} {FirmwareBackupName}";
 
             await ExecuteCommand(BackupFlash);
 
@@ -263,7 +279,7 @@ namespace FlashEx
             {
                 DisableInputs();
 
-                string GetFlashId = $" --port {SelectedCOMPort} flash_id";
+                string GetFlashId = $" --port {SelectedCOMPort} flash-id";
 
                 await ExecuteCommand(GetFlashId);
 
@@ -284,7 +300,7 @@ namespace FlashEx
             {
                 DisableInputs();
 
-                string GetImageInfo = $" image_info {FirmwareFileWithPath}";
+                string GetImageInfo = $" image-info {FirmwareFileWithPath}";
 
                 await ExecuteCommand(GetImageInfo);
 
@@ -320,17 +336,17 @@ namespace FlashEx
         // Open tasmota firmware releases site
         private void linkLabelOpenTasmotaFirmwares_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            OpenLinBrowser("https://ota.tasmota.com/tasmota/release");
+            OpenLinkBrowser("https://ota.tasmota.com/tasmota/release");
         }
 
         private void linkLabelWifiMqttConfigSite1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            OpenLinBrowser("https://tasmota.github.io/docs/Commands/#over-serial-bridge");
+            OpenLinkBrowser("https://tasmota.github.io/docs/Commands/#over-serial-bridge");
         }
 
         private void linkLabelWifiMqttConfigSite2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            OpenLinBrowser("https://tasmota.github.io/docs/Commands/#over-serial-bridge");
+            OpenLinkBrowser("https://tasmota.github.io/docs/Commands/#over-serial-bridge");
         }
 
         // Download Tasmote Firmwares
@@ -344,12 +360,18 @@ namespace FlashEx
                 return;
             }
 
+            // Get firmware url
+            if (comboBoxTasmotaSource.SelectedItem is DownloadItem item)
+            {
+                firmwareUrl = item.Url;
+            }
+
             // UI info
             labelDownloadTasmotaBin.ForeColor = Color.DarkOrange;
             labelDownloadTasmotaBin.Text = "init...";
 
             // Slpit tasmota url by slash
-            var TasmotaUrlArray = comboBoxTasmotaSource.Text.Split('/');
+            var TasmotaUrlArray = firmwareUrl.Split('/');
 
             // Count tasmota array
             var CntTasmotaArray = TasmotaUrlArray.Length;
@@ -363,7 +385,7 @@ namespace FlashEx
             using HttpClient httpClient = new();
             try
             {
-                using (Stream contentStream = await httpClient.GetStreamAsync(comboBoxTasmotaSource.Text))
+                using (Stream contentStream = await httpClient.GetStreamAsync(firmwareUrl))
                 {
 
                     // Create a FileStream to save the downloaded file
@@ -562,11 +584,6 @@ namespace FlashEx
                         // Read Serial Port communication
                         var readData = BuiltInSerialPort.ReadLine();
 
-                        //f (readData.Equals("val"))
-                        // {
-                        //
-                        // }
-
                         void act1() => richTextBoxConsoleLog.AppendText(readData);
                         richTextBoxConsoleLog.Invoke(act1);
 
@@ -655,6 +672,12 @@ namespace FlashEx
         {
             Database db = new();
             db.Show();
+        }
+
+        // Clear terminal log
+        private void iconButtonClearTerminal_Click(object sender, EventArgs e)
+        {
+            richTextBoxConsoleLog.Text = "";
         }
 
         //
@@ -888,7 +911,7 @@ namespace FlashEx
 
 
         // Open URL with browser
-        private void OpenLinBrowser(string url)
+        private void OpenLinkBrowser(string url)
         {
             Process.Start(new ProcessStartInfo("cmd", $"/c start {url}")
             {
@@ -931,7 +954,7 @@ namespace FlashEx
 
         private void textBoxDebugConsoleInput_KeyDown(object sender, KeyEventArgs e)
         {
-            
+
             if (e.KeyCode == Keys.Enter)
             {
                 // Supress sound
@@ -948,5 +971,6 @@ namespace FlashEx
                 }
             }
         }
+
     }
 }
